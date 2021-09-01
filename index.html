@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/github-markdown-css@3.0.1/github-markdown.min.css"
+    />
+    <!-- <link rel="stylesheet" href="css/main.css" /> -->
+  </head>
+
+  <body>
+    <div id="app">
+      <v-app>
+        <div id="connection-status">
+          <v-system-bar color="indigo lighten-5">
+            <v-icon>{{ StatusBar.ConnectionStatusIcon }}</v-icon>
+            <span>{{ StatusBar.ConnectionStatus }}</span>
+            <v-spacer></v-spacer>
+            <!-- あとで実装 -->
+            <!-- <v-icon @click="ReconnectWithLiveSplit">mdi-reload</v-icon> -->
+          </v-system-bar>
+        </div>
+
+        <div id="header">
+          <!-- ヘッダー -->
+          <v-app-bar color="indigo lighten-5" dense flat>
+            <v-app-bar-nav-icon
+              @click="ToggleNavigationDrawer"
+            ></v-app-bar-nav-icon>
+
+            <!-- 区間名 -->
+            <v-toolbar-title> {{ Markdown.SegmentName }} </v-toolbar-title>
+
+            <v-spacer></v-spacer>
+          </v-app-bar>
+        </div>
+
+        <v-container fluid>
+          <div id="markdown-container">
+            <v-sheet class="markdown-body">
+              <p v-html="Markdown.Content"></p>
+            </v-sheet>
+          </div>
+
+          <!-- ナビゲーションドロワー -->
+          <div class="navigation-drawer">
+            <v-navigation-drawer
+              v-model="NavigationDrawer.Model"
+              absolute
+              temporary
+            >
+              <v-list nav dense>
+                <v-list-item-group v-model="NavigationDrawer.ModelItemGroup">
+                  <!-- ファイル入力用 -->
+                  <v-file-input
+                    @change="ReadMarkdownFile"
+                    accept=".md"
+                    prepend-icon="mdi-markdown"
+                    label="Markdown File"
+                  >
+                  </v-file-input>
+
+                  <!-- 他アイテム用 -->
+                  <v-list-item
+                    v-for="item in NavigationDrawer.Items"
+                    :key="item.Title"
+                    @click="item.Func"
+                  >
+                    <v-list-item-icon>
+                      <v-icon v-text="item.Icon"></v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>{{ item.Title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-navigation-drawer>
+          </div>
+        </v-container>
+      </v-app>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/scripts/main.js" type="module"></script>
+  </body>
+</html>
